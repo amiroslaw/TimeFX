@@ -1,9 +1,12 @@
-package ovh.miroslaw.timefx;
+package ovh.miroslaw.timefx.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import ovh.miroslaw.timefx.LocalDateTimeDeserializer;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class Task {
 
@@ -15,6 +18,7 @@ public class Task {
     private List<String> tags;
 
     public Task() {
+        super();
     }
 
     public Task(LocalDateTime start, LocalDateTime end, List<String> tags) {
@@ -45,5 +49,30 @@ public class Task {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "start=" + start +
+                ", end=" + end +
+                ", tags=" + tags +
+                '}';
+    }
+
+    public TagDuration mapToTagDuration(TagType type) {
+        final String tag = getTags().stream()
+                .filter(type::test)
+                .findAny()
+                .orElse(" without");
+        final Duration duration = end == null ? Duration.ofMinutes(0) : Duration.between(end, start);
+        return new TagDuration(tag, duration);
+    }
+
+    public Optional<TagTask> mapTagName(TagType type) {
+               return getTags().stream()
+                .filter(type::test)
+                .findAny()
+                .map(tag -> new TagTask(tag, this));
     }
 }

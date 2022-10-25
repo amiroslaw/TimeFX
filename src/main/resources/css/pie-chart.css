@@ -1,0 +1,27 @@
+.default-color0.chart-pie { -fx-pie-color: #ffd700; }
+.default-color1.chart-pie { -fx-pie-color: #ffa500; }
+.default-color2.chart-pie { -fx-pie-color: #860061; }
+.default-color3.chart-pie { -fx-pie-color: #adff2f; }
+.default-color4.chart-pie { -fx-pie-color: #ff5700; }
+.default-color5.chart-pie { -fx-pie-color: #ff5700; }
+.default-color6.chart-pie { -fx-pie-color: #ff5700; }
+.default-color7.chart-pie { -fx-pie-color: #ff5700; }
+.default-color8.chart-pie { -fx-pie-color: #ff5700; }
+.default-color9.chart-pie { -fx-pie-color: #ff5700; }
+/* Colors of JavaFX pie chart slices. */
+.data0.chart-pie { -fx-pie-color: turquoise; }
+.data1.chart-pie { -fx-pie-color: aquamarine; }
+.data2.chart-pie { -fx-pie-color: cornflowerblue; }
+.data3.chart-pie { -fx-pie-color: blue; }
+.data4.chart-pie { -fx-pie-color: cadetblue; }
+.data5.chart-pie { -fx-pie-color: navy; }
+.data6.chart-pie { -fx-pie-color: deepskyblue; }
+.data7.chart-pie { -fx-pie-color: cyan; }
+.data8.chart-pie { -fx-pie-color: steelblue; }
+.data9.chart-pie { -fx-pie-color: teal; }
+.data10.chart-pie { -fx-pie-color: royalblue; }
+.data11.chart-pie { -fx-pie-color: dodgerblue; }
+.root
+{
+    /*-fx-background-color:#000;*/
+}

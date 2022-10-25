@@ -1,0 +1,10 @@
+{
+  "resources":{
+  "includes":[{
+      "pattern":"\\Qcss/pie-chart.css\\E"
+    }]},
+  "bundles":[{
+      "name":"com.sun.javafx.tk.quantum.QuantumMessagesBundle",
+      "locales":[""]
+    }]
+}

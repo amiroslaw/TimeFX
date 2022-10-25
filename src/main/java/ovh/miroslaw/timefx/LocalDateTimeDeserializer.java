@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
@@ -24,6 +25,10 @@ public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
     public LocalDateTime deserialize(JsonParser jsonparser, DeserializationContext context)
             throws IOException {
         String date = jsonparser.getText();
-        return LocalDateTime.parse(date, formatter);
+        final LocalDateTime dateWithWrongZone = LocalDateTime.parse(date, formatter);
+
+        return dateWithWrongZone.atZone(ZoneId.of("UTC"))
+                .withZoneSameInstant(ZoneId.systemDefault())
+                .toLocalDateTime();
     }
 }
