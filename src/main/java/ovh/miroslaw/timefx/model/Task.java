@@ -63,7 +63,7 @@ public class Task {
     public TagDuration mapToTagDuration(TagType type) {
         final String tag = getTags().stream()
                 .filter(type::test)
-                .findAny()
+                .findFirst()
                 .orElse(" without");
         final Duration duration = end == null ? Duration.ofMinutes(0) : Duration.between(end, start);
         return new TagDuration(tag, duration);
@@ -72,7 +72,7 @@ public class Task {
     public Optional<TagTask> mapTagName(TagType type) {
                return getTags().stream()
                 .filter(type::test)
-                .findAny()
+                .findFirst()
                 .map(tag -> new TagTask(tag, this));
     }
 }

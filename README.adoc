@@ -1,0 +1,48 @@
+:toc:
+
+== TimeFX
+GUI application for presenting taskwarrior data on charts. I was disappointed with the reporting capacity in https://timewarrior.net/[Timewarrior] or https://taskwarrior.org[Taskwarrior]. I've tried a few plugins for Timewarrior but I thought that a GUI application would be way better and more appealing for the eyes.
+
+TimeFX is written in Java with JavaFX, but it’s quite small and fast if you choose the native-image version. Java 17 is required for the jar package. 
+
+.Pie chart with contexts
+image::https://github.com/amiroslaw/repo-assets/raw/master/timefx/pie-chart.png[pie chart,700,role=center] 
+
+.Area chart with contexts
+image::https://github.com/amiroslaw/repo-assets/raw/master/timefx/area-chart.png[area chart,700,role=center] 
+
+=== Usage
+The application requires only Timewarrior for collecting data, but if you want to integrate it with Taskwarrior, you can add a hook for that. In the  https://timewarrior.net/docs/taskwarrior/[official documentation] is the instruction on how to install hooks. 
+
+==== Custom hook 
+If you use my hook, TimeFX can support tags (projects and contexts) from Taskwarrior.
+The problem with the original script is that it doesn't recognize Taskwarrior tags. I forked it (it's in `task/hooks` directory) and modified it like this: 
+
+.Hook with tags for taskwarrior
+[source,python]
+----
+def extract_tags_from(json_obj):
+    # Extract attributes for use as tags.
+    tags = [json_obj['description']]
+    contexts = ['car', 'cod', 'fin', 'per']
+
+    if 'tags' in json_obj:
+        for tag in json_obj['tags']:
+            if tag in contexts:
+                tags.append('+' + tag)
+        # tags.extend(json_obj['tags'])
+    if 'project' in json_obj:
+        tags.append('%' + json_obj['project'])
+
+	return tags
+----
+
+What can you see, from now on in Timewarrior each project will have a prefix `%` and context will have `+` but I limited them to a few ones (`contexts` array).
+
+=== Future features and remarks
+
+* if task has multiple tags without a prefix, TimeFX will count only the first one in the report
+* date ranges do not include the current day
+
+* [ ] configuration file to change prefixes for tags
+* [ ] report results may differ from Timewarrior because TimeFX does not split tasks at midnight  
