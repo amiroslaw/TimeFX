@@ -1,7 +1,7 @@
 :toc:
 
 == TimeFX
-GUI application for presenting taskwarrior data on charts. I was disappointed with the reporting capacity in https://timewarrior.net/[Timewarrior] or https://taskwarrior.org[Taskwarrior]. I've tried a few plugins for Timewarrior but I thought that a GUI application would be way better and more appealing for the eyes.
+GUI application for presenting Timewarrior data on charts. I was disappointed with the reporting capacity in https://timewarrior.net/[Timewarrior] or https://taskwarrior.org[Taskwarrior]. I've tried a few plugins for Timewarrior but I thought that a GUI application would be way better and more appealing for the eyes.
 
 TimeFX is written in Java with JavaFX, but it’s quite small and fast if you choose the native-image version. Java 17 is required for the jar package. 
 
