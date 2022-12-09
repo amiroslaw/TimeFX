@@ -6,15 +6,14 @@ import ovh.miroslaw.timefx.EnumHelper;
 
 
 public enum DateRangeArea {
-
     WEEK("Week"),
     LAST_WEEK("Last week"),
     MONTH("Current month"),
     LAST_MONTH("Last month"),
-    DAYS_30("30 last days"),
+    DAYS_30("Last 30 days"),
     QUARTER("Current quarter"),
     LAST_QUARTER("Last quarter"),
-    SIX_MONTHS("6 months"),
+    SIX_MONTHS("Last 6 months"),
     YEAR("Year"),
     LAST_YEAR("Last year");
 

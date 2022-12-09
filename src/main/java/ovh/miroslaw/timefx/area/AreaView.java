@@ -47,18 +47,15 @@ public class AreaView implements View {
         mainPane.getChildren().addAll(caption, statPane);
 
         dateRange.setOnAction(e -> {
-            var rangeEnum = DateRangeArea.ofLowerCase(((ChoiceBox<String>) e.getTarget()).getValue());
-            final Boundary range = new Boundary(rangeEnum);
-            final TagType tagType = TagType.ofLowerCase(tagTypes.getValue());
-            fillUIControls(areaChartDataCreator, range, tagType);
+            final String range = ((ChoiceBox<String>) e.getTarget()).getValue();
+            fillUIControls(areaChartDataCreator, range, tagTypes.getValue());
             refreshChart(areaChart, range);
         });
 
         tagTypes.setOnAction(e -> {
-            final TagType type = TagType.ofLowerCase(((ChoiceBox<String>) e.getTarget()).getValue());
-            final Boundary range = new Boundary(dateRange.getValue());
-            fillUIControls(areaChartDataCreator, range, type);
-            refreshChart(areaChart, range);
+            final String type = ((ChoiceBox<String>) e.getTarget()).getValue();
+            fillUIControls(areaChartDataCreator, dateRange.getValue(), type);
+            refreshChart(areaChart, dateRange.getValue());
         });
 
         return mainPane;
@@ -74,17 +71,21 @@ public class AreaView implements View {
         series.forEach(s -> areaChart.getData().add(s.series()));
     }
 
-    private void fillUIControls(AreaChartDataCreator dataCreator, Boundary range, TagType tagType) {
-        final List<ChartSeries> chartSeries = dataCreator.filterData(range, tagType);
+    private void fillUIControls(AreaChartDataCreator dataCreator, String range, String tagType) {
+        final TagType type = TagType.ofLowerCase(tagType);
+        final Boundary boundary = new Boundary(range);
+        final List<ChartSeries> chartSeries = dataCreator.filterData(boundary, type);
         areaChart.getData().clear();
         chartSeries.forEach(s -> areaChart.getData().add(s.series()));
         statPane.getChildren().setAll(buildStatsPanel(chartSeries));
     }
 
-    private void refreshChart(AreaChart<Number, Number> areaChart, Boundary boundary) {
+    private void refreshChart(AreaChart<Number, Number> areaChart, String range) {
+        final DateRangeArea dateRangeArea = DateRangeArea.ofLowerCase(range);
+        final Boundary boundary = new Boundary(dateRangeArea);
+
         NumberAxis xAxis = (NumberAxis) areaChart.getXAxis();
-        // TODO get enum label
-        areaChart.setTitle(boundary.getRangeName().toLowerCase() + ": " + boundary.getDateRangeLabel());
+        areaChart.setTitle(dateRangeArea.getLabel() + ": " + boundary.getDateRangeLabel());
         xAxis.setLowerBound(boundary.getLowerBoundary());
         xAxis.setUpperBound(boundary.getUpperBoundary());
         xAxis.setTickUnit(1);
