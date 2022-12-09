@@ -3,6 +3,7 @@ package ovh.miroslaw.timefx.area;
 import javafx.collections.FXCollections;
 import javafx.scene.chart.XYChart;
 import ovh.miroslaw.timefx.Boundary;
+import ovh.miroslaw.timefx.TaskCache;
 import ovh.miroslaw.timefx.model.TagTask;
 import ovh.miroslaw.timefx.model.TagType;
 import ovh.miroslaw.timefx.model.Task;
@@ -10,8 +11,6 @@ import ovh.miroslaw.timefx.model.Task;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.Map;
@@ -26,24 +25,13 @@ import static java.util.stream.Collectors.toList;
 public class AreaChartDataCreator {
 
     public static final String ALL = "All";
-    private final Map<String, List<Task>> cache = new HashMap<>();
-
-    public AreaChartDataCreator(List<Task> tasks) {
-        this.cache.put(ALL, Collections.unmodifiableList(tasks));
-    }
 
     public List<ChartSeries> filterData(Boundary boundary, TagType tagType) {
-        final List<Task> filteredByDateRange = cache.computeIfAbsent(boundary.getDateRange().name(), k ->
-                cache.get(ALL).parallelStream()
-                        .filter(t -> t.getEnd() != null)
-                        .filter(boundary.isBetween)
-                        .toList()
-        );
+        final List<Task> filteredByDateRange = TaskCache.getTasks(boundary);
 
-        // TODO repeats reduceDuration
         final Map<LocalDate, List<Duration>> groupedByDay = groupedByDay(filteredByDateRange, boundary);
         final List<ChartSeries> chartSeries = new ArrayList<>();
-        chartSeries.add(buildDataSeries(groupedByDay, boundary, "All"));
+        chartSeries.add(buildDataSeries(groupedByDay, boundary, ALL));
         if (tagType != TagType.TASKS) {
             chartSeries.addAll(groupByContext(filteredByDateRange, boundary, tagType));
         }
@@ -86,7 +74,7 @@ public class AreaChartDataCreator {
     private Map<LocalDate, List<Duration>> groupedByDay(List<Task> tasks, Boundary boundary) {
         final Function<Task, Duration> sumDuration = t -> Duration.between(t.getStart(), t.getEnd());
         return tasks.parallelStream()
-                .filter(boundary.isBetween)
+                .filter(boundary.getIsInRange())
                 .collect(groupingBy(task -> task.getStart().toLocalDate(),
                         mapping(sumDuration, toList())
                 ));

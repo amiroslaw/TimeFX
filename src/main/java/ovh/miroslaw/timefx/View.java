@@ -10,7 +10,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import ovh.miroslaw.timefx.model.Task;
 
 import java.util.List;
 
@@ -43,6 +42,6 @@ public interface View {
         return mainPane;
     }
 
-    Pane getPane(List<Task> tasks);
+    Pane getPane();
 
 }

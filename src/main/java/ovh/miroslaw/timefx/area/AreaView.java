@@ -12,7 +12,6 @@ import javafx.scene.layout.VBox;
 import ovh.miroslaw.timefx.Boundary;
 import ovh.miroslaw.timefx.View;
 import ovh.miroslaw.timefx.model.TagType;
-import ovh.miroslaw.timefx.model.Task;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -30,8 +29,8 @@ public class AreaView implements View {
     private final Label caption = new Label("");
 
     @Override
-    public Pane getPane(List<Task> tasks) {
-        final AreaChartDataCreator areaChartDataCreator = new AreaChartDataCreator(tasks);
+    public Pane getPane() {
+        final AreaChartDataCreator areaChartDataCreator = new AreaChartDataCreator();
 
         ChoiceBox<String> dateRange = DateRangeArea.createChoiceBox();
         ChoiceBox<String> tagTypes = TagType.createChoiceBox();
@@ -84,7 +83,7 @@ public class AreaView implements View {
 
     private void refreshChart(AreaChart<Number, Number> areaChart, Boundary boundary) {
         NumberAxis xAxis = (NumberAxis) areaChart.getXAxis();
-        areaChart.setTitle(boundary.getDateRange().getLabel() + ": " + boundary.getDateRangeLabel());
+        areaChart.setTitle(boundary.getRangeName() + ": " + boundary.getDateRangeLabel());
         xAxis.setLowerBound(boundary.getLowerBoundary());
         xAxis.setUpperBound(boundary.getUpperBoundary());
         xAxis.setTickUnit(1);

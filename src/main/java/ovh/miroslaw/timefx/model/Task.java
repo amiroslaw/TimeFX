@@ -51,15 +51,6 @@ public class Task {
         this.tags = tags;
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "start=" + start +
-                ", end=" + end +
-                ", tags=" + tags +
-                '}';
-    }
-
     public TagDuration mapToTagDuration(TagType type) {
         final String tag = getTags().stream()
                 .filter(type::test)
@@ -74,5 +65,14 @@ public class Task {
                 .filter(type::test)
                 .findFirst()
                 .map(tag -> new TagTask(tag, this));
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+               "start=" + start +
+               ", end=" + end +
+               ", tags=" + tags +
+               '}';
     }
 }

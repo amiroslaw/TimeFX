@@ -4,13 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import ovh.miroslaw.timefx.EnumHelper;
 
+
 public enum DateRangeArea {
 
     WEEK("Week"),
     LAST_WEEK("Last week"),
     MONTH("Current month"),
-    DAYS_30("30 last days"),
     LAST_MONTH("Last month"),
+    DAYS_30("30 last days"),
     QUARTER("Current quarter"),
     LAST_QUARTER("Last quarter"),
     SIX_MONTHS("6 months"),

@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
+import ovh.miroslaw.timefx.Boundary;
+import ovh.miroslaw.timefx.TaskCache;
 import ovh.miroslaw.timefx.model.TagDuration;
 import ovh.miroslaw.timefx.model.TagType;
 import ovh.miroslaw.timefx.model.Task;
@@ -11,9 +13,7 @@ import ovh.miroslaw.timefx.model.Task;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -21,23 +21,11 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
-import static ovh.miroslaw.timefx.pie.DateRangePie.ALL;
 
 public class PieChartDataCreator {
 
-    private final Map<String, List<Task>> cache = new HashMap<>();
-
-    public PieChartDataCreator(List<Task> tasks) {
-        this.cache.put(ALL.name(), Collections.unmodifiableList(tasks));
-    }
-
-    public ObservableList<Data> filterData(DateRangePie dateRange, TagType tagType) {
-        final List<Task> filteredByDateRange = cache.computeIfAbsent(dateRange.name(), k ->
-                cache.get(ALL.name()).parallelStream()
-                        .filter(t -> t.getEnd() != null)
-                        .filter(task -> dateRange.test(task.getStart()))
-                        .toList()
-        );
+    public ObservableList<Data> filterData(Boundary dateRange, TagType tagType) {
+        final List<Task> filteredByDateRange = TaskCache.getTasks(dateRange);
         final Map<String, List<Duration>> tagsMap = groupByTagType(filteredByDateRange, tagType);
         final List<Data> pieChartDataList = buildChartData(tagsMap);
         return FXCollections.observableArrayList(pieChartDataList);
@@ -51,7 +39,8 @@ public class PieChartDataCreator {
         for (Entry<String, List<Duration>> entry : tasks.entrySet()) {
             final Duration tagSum = reduceDuration(entry);
             final float percent = (float) tagSum.toMinutes() / entireDuration * 100;
-            final String label = String.format("%s (%.0f%%)  %d:%d", entry.getKey(), percent, Math.abs(tagSum.toHours()),
+            final String label = String.format("%s (%.0f%%)  %d:%d", entry.getKey(), percent,
+                    Math.abs(tagSum.toHours()),
                     Math.abs(tagSum.toMinutesPart()));
             summary.add(new PieChart.Data(label, tagSum.toMinutes()));
         }
