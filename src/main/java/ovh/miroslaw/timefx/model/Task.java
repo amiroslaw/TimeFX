@@ -61,7 +61,7 @@ public class Task {
     }
 
     public Optional<TagTask> mapTagName(TagType type) {
-               return getTags().stream()
+        return getTags().stream()
                 .filter(type::test)
                 .findFirst()
                 .map(tag -> new TagTask(tag, this));

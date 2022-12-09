@@ -17,8 +17,8 @@ public class TimeFX extends Application {
 
         final PieView pieView = new PieView();
         final AreaView areaView = new AreaView();
-        SceneOne.set(PIE.name(), pieView.getPane()).centered().build();
         SceneOne.set(AREA.name(), areaView.getPane()).centered().build();
+        SceneOne.set(PIE.name(), pieView.getPane()).centered().build();
         SceneOne.show(AREA.name());
         final String pieChartStyle = getClass().getResource("/css/pie-chart.css").toExternalForm();
         SceneOne.setStyleSheetsForAll(pieChartStyle);

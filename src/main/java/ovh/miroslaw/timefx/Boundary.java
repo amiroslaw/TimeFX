@@ -7,6 +7,7 @@ import ovh.miroslaw.timefx.pie.DateRangePie;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.function.Predicate;
 
@@ -15,7 +16,7 @@ public class Boundary {
     private static final Integer LOWER_BOUNDARY = 1;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private final Predicate<Task> isAfter = task -> task.getStart().isAfter(startDate.minusDays(1));
+    private final Predicate<Task> isAfter = task -> task.getStart().isAfter(startDate);
     private final Predicate<Task> isBefore = task -> task.getStart().isBefore(endDate.plusDays(1));
     private Predicate<Task> isInRange = task -> true;
     private String rangeName;
@@ -63,7 +64,8 @@ public class Boundary {
 
     private void setBoundaries(String range) {
         this.rangeName = range;
-        final LocalDateTime now = LocalDateTime.now();
+        final LocalDateTime now = LocalDateTime.now().with(LocalTime.MIDNIGHT);
+
         switch (range) {
             case "TODAY" -> {
                 startDate = now;

@@ -39,9 +39,11 @@ public class PieChartDataCreator {
         for (Entry<String, List<Duration>> entry : tasks.entrySet()) {
             final Duration tagSum = reduceDuration(entry);
             final float percent = (float) tagSum.toMinutes() / entireDuration * 100;
-            final String label = String.format("%s (%.0f%%)  %d:%d", entry.getKey(), percent,
+            final int minutes = Math.abs(tagSum.toMinutesPart());
+            final String minutesString = minutes <= 9 ? "0" + minutes : String.valueOf(minutes);
+            final String label = String.format("%s (%.0f%%)  %d:%s", entry.getKey(), percent,
                     Math.abs(tagSum.toHours()),
-                    Math.abs(tagSum.toMinutesPart()));
+                    minutesString);
             summary.add(new PieChart.Data(label, tagSum.toMinutes()));
         }
         return summary.parallelStream()

@@ -13,7 +13,7 @@ import ovh.miroslaw.timefx.model.TagType;
 import java.util.List;
 
 import static ovh.miroslaw.timefx.model.TagType.CONTEXTS;
-import static ovh.miroslaw.timefx.pie.DateRangePie.MONTH;
+import static ovh.miroslaw.timefx.pie.DateRangePie.WEEK;
 
 public class PieView implements View {
 
@@ -25,9 +25,9 @@ public class PieView implements View {
         ChoiceBox<String> dateRange = DateRangePie.createChoiceBox();
 
         final PieChart pieChart = new PieChart();
-        pieChart.setData(pieChartDataCreator.filterData(new Boundary("MONTH"), CONTEXTS));
-        pieChart.setTitle(MONTH.name().toLowerCase() + ": " + getLabel(MONTH));
-        pieChart.setTitle(getLabel(MONTH));
+        pieChart.setData(pieChartDataCreator.filterData(new Boundary(WEEK), CONTEXTS));
+        pieChart.setTitle(WEEK.name().toLowerCase() + ": " + getLabel(WEEK));
+        pieChart.setTitle(getLabel(WEEK));
         pieChart.setPrefSize(1000, 650);
 
         tagTypes.setOnAction(e -> {
@@ -49,7 +49,7 @@ public class PieView implements View {
     }
 
     private String getLabel(DateRangePie range) {
-        final String title = range.name().toLowerCase().replace("_", " ");
+        final String title = range.getLabel();
         try {
             return title + ": " + new Boundary(range.name()).getDateRangeLabel();
         } catch (IllegalArgumentException e) {

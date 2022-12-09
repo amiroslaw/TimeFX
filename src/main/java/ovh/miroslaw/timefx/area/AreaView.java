@@ -83,7 +83,8 @@ public class AreaView implements View {
 
     private void refreshChart(AreaChart<Number, Number> areaChart, Boundary boundary) {
         NumberAxis xAxis = (NumberAxis) areaChart.getXAxis();
-        areaChart.setTitle(boundary.getRangeName() + ": " + boundary.getDateRangeLabel());
+        // TODO get enum label
+        areaChart.setTitle(boundary.getRangeName().toLowerCase() + ": " + boundary.getDateRangeLabel());
         xAxis.setLowerBound(boundary.getLowerBoundary());
         xAxis.setUpperBound(boundary.getUpperBoundary());
         xAxis.setTickUnit(1);
@@ -98,8 +99,10 @@ public class AreaView implements View {
 
     private List<Label> buildStatsPanel(List<ChartSeries> chartSeries) {
         LongFunction<String> toTime = l -> {
-            final Duration min = Duration.ofMinutes(l);
-            return String.format("%d:%d", min.toHours(), min.toMinutesPart());
+            final Duration duration = Duration.ofMinutes(l);
+            final int minutes = Math.abs(duration.toMinutesPart());
+            final String minutesString = minutes <= 9 ? "0" + minutes : String.valueOf(minutes);
+            return String.format("%d:%s", Math.abs(duration.toHours()), minutesString);
         };
         final List<Label> labels = new ArrayList<>();
         String description = """

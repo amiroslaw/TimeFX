@@ -24,14 +24,15 @@ import static java.util.stream.Collectors.toList;
 
 public class AreaChartDataCreator {
 
-    public static final String ALL = "All";
+    public static final String ALL_TASK_LABEL = "All";
 
     public List<ChartSeries> filterData(Boundary boundary, TagType tagType) {
         final List<Task> filteredByDateRange = TaskCache.getTasks(boundary);
 
         final Map<LocalDate, List<Duration>> groupedByDay = groupedByDay(filteredByDateRange, boundary);
+
         final List<ChartSeries> chartSeries = new ArrayList<>();
-        chartSeries.add(buildDataSeries(groupedByDay, boundary, ALL));
+        chartSeries.add(buildDataSeries(groupedByDay, boundary, ALL_TASK_LABEL));
         if (tagType != TagType.TASKS) {
             chartSeries.addAll(groupByContext(filteredByDateRange, boundary, tagType));
         }
