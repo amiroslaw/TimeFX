@@ -75,6 +75,7 @@ public class AreaChartDataCreator {
     private Map<LocalDate, List<Duration>> groupedByDay(List<Task> tasks, Boundary boundary) {
         final Function<Task, Duration> sumDuration = t -> Duration.between(t.getStart(), t.getEnd());
         return tasks.parallelStream()
+                .filter(b -> b.getEnd() != null)
                 .filter(boundary.getIsInRange())
                 .collect(groupingBy(task -> task.getStart().toLocalDate(),
                         mapping(sumDuration, toList())

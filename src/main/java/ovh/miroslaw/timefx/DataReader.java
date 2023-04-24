@@ -21,22 +21,24 @@ public class DataReader {
 
     public static List<Task> getData() {
         Process process;
-        int exitCode;
+        int exitCode = 0;
+        String output = "";
         try {
             process = new ProcessBuilder("timew", "export").start();
+            output = new BufferedReader(
+                    new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))
+                    .lines().collect(Collectors.joining("\n"));
             exitCode = process.waitFor();
         } catch (IOException | InterruptedException e) {
             System.err.println("Could not find or run timewarrior");
-            e.printStackTrace();
             Thread.currentThread().interrupt();
+            e.printStackTrace();
             return Collections.emptyList();
         }
         if (exitCode != 0) {
+            System.err.println("timewarrior exited with code " + exitCode);
             return Collections.emptyList();
         }
-        final String output = new BufferedReader(
-                new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))
-                .lines().collect(Collectors.joining("\n"));
 
         ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
