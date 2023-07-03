@@ -1,22 +1,27 @@
 :toc:
 
 == TimeFX
-GUI application for presenting Timewarrior data on charts. I was disappointed with the reporting capacity in https://timewarrior.net/[Timewarrior] or https://taskwarrior.org[Taskwarrior]. I've tried a few plugins for Timewarrior but I thought that a GUI application would be way better and more appealing for the eyes.
-
-TimeFX is written in Java with JavaFX, but it’s quite small and fast if you choose the native-image version. Java 17 is required for the jar package. 
-
-.Pie chart with contexts
-image::https://github.com/amiroslaw/repo-assets/raw/master/timefx/pie-chart.png[pie chart,700,role=center] 
+GUI application for presenting Timewarrior data on charts. I was disappointed with the reporting capacity in https://timewarrior.net/[Timewarrior] or https://taskwarrior.org[Taskwarrior]. I've tried a few plugins for Timewarrior, but I thought that a GUI application would be way better and more appealing for the eyes.
 
 .Area chart with contexts
 image::https://github.com/amiroslaw/repo-assets/raw/master/timefx/area-chart.png[area chart,700,role=center] 
 
+.Pie chart with contexts
+image::https://github.com/amiroslaw/repo-assets/raw/master/timefx/pie-chart.png[pie chart,700,role=center] 
+
 === Usage
-The application requires only Timewarrior for collecting data, but if you want to integrate it with Taskwarrior, you can add a hook for that. In the  https://timewarrior.net/docs/taskwarrior/[official documentation] is the instruction on how to install hooks. 
+The application requires only Timewarrior for collecting data, but if you want to integrate it with Taskwarrior, you can add a hook for that. In the https://timewarrior.net/docs/taskwarrior/[official documentation] is the instruction on how to install hooks. 
+
+Data for graphs are taken from JSON exported by Timewarrior. 
+
+[source,bash]
+----
+timew export :all
+----
 
 ==== Custom hook 
 If you use my hook, TimeFX can support tags (projects and contexts) from Taskwarrior.
-The problem with the original script is that it doesn't recognize Taskwarrior tags. I forked it (it's in `task/hooks` directory) and modified it like this: 
+The problem with the original script is that it doesn't recognize Taskwarrior tags. I forked it (it's in `task/hooks` directory) and modified it this way: 
 
 .Hook with tags for taskwarrior
 [source,python]
@@ -38,6 +43,28 @@ def extract_tags_from(json_obj):
 ----
 
 What can you see, from now on in Timewarrior each project will have a prefix `%` and context will have `+` but I limited them to a few ones (`contexts` array).
+
+==== Running application
+There are two versions of the application:
+
+**Native Image** 
+The file "timefx" is a Java Native Image, bundled for Linux - it doesn't require Java. May require additional system dependencies. In order to run the application just run `./timefx` in the terminal.
+
+**jar** 
+The jar file "TimeFX.jar" needs Java 17 with the JavaFX runtime. 
+To accomplish this, install Java 17, download JavaFX library and run belowe command. Detailed quide is on the https://openjfx.io/openjfx-docs/#install-javafx[official website].
+
+[source,bash]
+----
+java --module-path $PATH_TO_FX --add-modules javafx.controls  -jar "path/to/TimeFX.jar"
+----
+
+There is an option to have Jave with prebuild JavaFX form https://bell-sw.com/pages/downloads/[Liberica], so execution will be simpler:
+
+[source,bash]
+----
+java -jar "path/to/TimeFX.jar"
+----
 
 === Future features and remarks
 

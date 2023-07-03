@@ -155,6 +155,15 @@
   ]
 },
 {
+  "name":"com.sun.javafx.font.freetype.FT_Matrix",
+  "fields":[
+    {"name":"xx"}, 
+    {"name":"xy"}, 
+    {"name":"yx"}, 
+    {"name":"yy"}
+  ]
+},
+{
   "name":"java.lang.Iterable",
   "methods":[{"name":"iterator","parameterTypes":[] }]
 },
